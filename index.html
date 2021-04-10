@@ -6018,22 +6018,21 @@ var $elm$url$Url$Parser$s = function (str) {
 			}
 		});
 };
-var $author$project$Main$websiteTitle = 'Tests/';
 var $author$project$Main$routeParser = $elm$url$Url$Parser$oneOf(
 	_List_fromArray(
 		[
 			A2(
 			$elm$url$Url$Parser$map,
 			$author$project$Main$Main,
-			$elm$url$Url$Parser$s($author$project$Main$websiteTitle + '')),
+			$elm$url$Url$Parser$s('')),
 			A2(
 			$elm$url$Url$Parser$map,
 			$author$project$Main$CV,
-			$elm$url$Url$Parser$s($author$project$Main$websiteTitle + 'CV')),
+			$elm$url$Url$Parser$s('CV')),
 			A2(
 			$elm$url$Url$Parser$map,
 			$author$project$Main$Redshift,
-			$elm$url$Url$Parser$s($author$project$Main$websiteTitle + 'redshift'))
+			$elm$url$Url$Parser$s('redshift'))
 		]));
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
@@ -6126,7 +6125,7 @@ var $author$project$Main$view = function (model) {
 				}
 			}()
 			]),
-		title: title
+		title: title + ' and a potato'
 	};
 };
 var $author$project$Main$main = $elm$browser$Browser$application(

@@ -90,9 +90,9 @@ pageMap =
 routeParser : Parser (Page -> a) a
 routeParser =
   oneOf
-    [ Url.Parser.map Main (Url.Parser.s (websiteTitle ++ ""))
-    , Url.Parser.map CV (Url.Parser.s (websiteTitle ++  "CV"))
-    , Url.Parser.map Redshift (Url.Parser.s (websiteTitle ++ "redshift"))
+    [ Url.Parser.map Main (Url.Parser.s (""))
+    , Url.Parser.map CV (Url.Parser.s ("CV"))
+    , Url.Parser.map Redshift (Url.Parser.s ("redshift"))
     ]
 
 view : Model -> Browser.Document Msg
@@ -103,7 +103,7 @@ view model =
     test = model.url.host -- THIS ONE I believe
     page = Dict.get title pageMap
   in
-    { title = title
+    { title = title ++ " and a potato"
     , body =
         [ text "The current URL is: "
         , b [] [ text title ]
