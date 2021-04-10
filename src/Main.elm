@@ -92,6 +92,7 @@ routeParser =
   oneOf
     [ Url.Parser.map Main (Url.Parser.s ("Tests/main"))
     , Url.Parser.map CV (Url.Parser.s ("/Tests/CV"))
+    , Url.Parser.map Main (Url.Parser.s ("main"))
     , Url.Parser.map Redshift (Url.Parser.s ("https://pf-physics.github.io/Tests/redshift"))
     ]
 
@@ -107,7 +108,7 @@ view model =
   in
     { title = title
     , body =
-        [ text "Soupss "
+        [ text "Soup why "
         , b [] [ text title ]
         , p [] [ text model.url.path ]
         , b [] [ text test ]
