@@ -90,9 +90,9 @@ pageMap =
 routeParser : Parser (Page -> a) a
 routeParser =
   oneOf
-    [ Url.Parser.map Main (Url.Parser.s (""))
-    , Url.Parser.map CV (Url.Parser.s ("CV"))
-    , Url.Parser.map Redshift (Url.Parser.s ("redshift"))
+    [ Url.Parser.map Main (Url.Parser.s (websiteTitle ++ ""))
+    , Url.Parser.map CV (Url.Parser.s (websiteTitle ++ "CV"))
+    , Url.Parser.map Redshift (Url.Parser.s (websiteTitle ++ "redshift"))
     ]
 
 view : Model -> Browser.Document Msg
@@ -125,7 +125,7 @@ view model =
     }
 
 -- The Repo name, will change eventually
-websiteTitle = "Tests/"
+websiteTitle = "/Tests/"
 
 viewLink : String -> Html msg
 viewLink path =
