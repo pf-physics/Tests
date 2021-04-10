@@ -103,9 +103,9 @@ view model =
     test = model.url.host -- THIS ONE I believe
     page = Dict.get title pageMap
   in
-    { title = title ++ " and a potato"
+    { title = title
     , body =
-        [ text "The current URL is: "
+        [ text "I have to say something about it "
         , b [] [ text title ]
         , p [] [ text model.url.path ]
         , b [] [ text test ]
