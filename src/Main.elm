@@ -90,9 +90,9 @@ pageMap =
 routeParser : Parser (Page -> a) a
 routeParser =
   oneOf
-    [ Url.Parser.map Main (Url.Parser.s (""))
-    , Url.Parser.map CV (Url.Parser.s ("CV"))
-    , Url.Parser.map Redshift (Url.Parser.s ("redshift"))
+    [ Url.Parser.map Main (Url.Parser.s ("Tests/main"))
+    , Url.Parser.map CV (Url.Parser.s ("/Tests/CV"))
+    , Url.Parser.map Redshift (Url.Parser.s ("https://pf-physics.github.io/Tests/redshift"))
     ]
 
 view : Model -> Browser.Document Msg
@@ -107,13 +107,14 @@ view model =
   in
     { title = title
     , body =
-        [ text "Soup "
+        [ text "Soupss "
         , b [] [ text title ]
         , p [] [ text model.url.path ]
         , b [] [ text test ]
         , ul []
             [ viewLink "main"
             , viewLink "redshift"
+            , viewLink "CV"
             ]
         , case route of
             Just p ->

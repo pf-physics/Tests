@@ -6024,15 +6024,15 @@ var $author$project$Main$routeParser = $elm$url$Url$Parser$oneOf(
 			A2(
 			$elm$url$Url$Parser$map,
 			$author$project$Main$Main,
-			$elm$url$Url$Parser$s('')),
+			$elm$url$Url$Parser$s('Tests/main')),
 			A2(
 			$elm$url$Url$Parser$map,
 			$author$project$Main$CV,
-			$elm$url$Url$Parser$s('CV')),
+			$elm$url$Url$Parser$s('/Tests/CV')),
 			A2(
 			$elm$url$Url$Parser$map,
 			$author$project$Main$Redshift,
-			$elm$url$Url$Parser$s('redshift'))
+			$elm$url$Url$Parser$s('https://pf-physics.github.io/Tests/redshift'))
 		]));
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
@@ -6079,7 +6079,7 @@ var $author$project$Main$view = function (model) {
 	return {
 		body: _List_fromArray(
 			[
-				$elm$html$Html$text('Soup '),
+				$elm$html$Html$text('Soupss '),
 				A2(
 				$elm$html$Html$b,
 				_List_Nil,
@@ -6107,7 +6107,8 @@ var $author$project$Main$view = function (model) {
 				_List_fromArray(
 					[
 						$author$project$Main$viewLink('main'),
-						$author$project$Main$viewLink('redshift')
+						$author$project$Main$viewLink('redshift'),
+						$author$project$Main$viewLink('CV')
 					])),
 				function () {
 				if (route.$ === 'Just') {
