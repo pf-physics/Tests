@@ -105,7 +105,7 @@ view model =
   in
     { title = title
     , body =
-        [ text "I have to say something about it "
+        [ text "I am this thing "
         , b [] [ text title ]
         , p [] [ text model.url.path ]
         , b [] [ text test ]
@@ -125,7 +125,7 @@ view model =
     }
 
 -- The Repo name, will change eventually
-websiteTitle = "/Tests/"
+websiteTitle = "Tests/"
 
 viewLink : String -> Html msg
 viewLink path =
