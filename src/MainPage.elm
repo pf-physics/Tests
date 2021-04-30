@@ -1,4 +1,4 @@
-module Main exposing (..)
+module MainPage exposing (..)
 
 -- Press buttons to increment and decrement a counter.
 --
@@ -38,7 +38,7 @@ type Model
   | Success String
 
 
-init : () -> (Model, Cmd Msg)
+init : () -> (Model, Cmd Msg) -- I have Msg and msg below... should check that?
 init _ =
   ( Loading
   , Http.get
@@ -55,7 +55,7 @@ type Msg
   = GotImage (Result Http.Error String)
 
 
-update : Msg -> Model -> (Model, Cmd msg)
+update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
   case msg of
     GotImage result ->
