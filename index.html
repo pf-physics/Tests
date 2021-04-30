@@ -5356,13 +5356,13 @@ var $elm$core$Task$perform = F2(
 				A2($elm$core$Task$map, toMessage, task)));
 	});
 var $elm$browser$Browser$application = _Browser_application;
-var $author$project$Main$IndexPage = function (a) {
-	return {$: 'IndexPage', a: a};
-};
 var $author$project$Main$Model = F4(
 	function (key, url, mainModel, message) {
 		return {key: key, mainModel: mainModel, message: message, url: url};
 	});
+var $author$project$Main$IndexPage = function (a) {
+	return {$: 'IndexPage', a: a};
+};
 var $author$project$MainPage$GotImage = function (a) {
 	return {$: 'GotImage', a: a};
 };
@@ -6166,27 +6166,8 @@ var $author$project$MainPage$init = function (_v0) {
 				url: 'https://api.nasa.gov/planetary/apod?api_key=E5I1roOsvZvSKbJFALNAnoHqD12FNcmL8uoARAd3'
 			}));
 };
-var $elm$core$Platform$Cmd$map = _Platform_map;
-var $author$project$Main$init = F3(
-	function (flags, url, key) {
-		var _v0 = $author$project$MainPage$init(_Utils_Tuple0);
-		var mdl = _v0.a;
-		var msg = _v0.b;
-		return _Utils_Tuple2(
-			A4(
-				$author$project$Main$Model,
-				key,
-				url,
-				$elm$core$Maybe$Just(mdl),
-				$elm$core$Maybe$Just(url.path)),
-			A2($elm$core$Platform$Cmd$map, $author$project$Main$IndexPage, msg));
-	});
-var $elm$core$Platform$Sub$batch = _Platform_batch;
-var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
-var $author$project$Main$subscriptions = function (_v0) {
-	return $elm$core$Platform$Sub$none;
-};
 var $elm$browser$Browser$Navigation$load = _Browser_load;
+var $elm$core$Platform$Cmd$map = _Platform_map;
 var $elm$browser$Browser$Navigation$pushUrl = _Browser_pushUrl;
 var $elm$url$Url$addPort = F2(
 	function (maybePort, starter) {
@@ -6311,6 +6292,26 @@ var $author$project$Main$update = F2(
 				}
 		}
 	});
+var $author$project$Main$init = F3(
+	function (flags, url, key) {
+		var _v0 = A2(
+			$author$project$Main$update,
+			$author$project$Main$UrlChanged(url),
+			A4(
+				$author$project$Main$Model,
+				key,
+				url,
+				$elm$core$Maybe$Nothing,
+				$elm$core$Maybe$Just('soup')));
+		var mdl = _v0.a;
+		var msg = _v0.b;
+		return _Utils_Tuple2(mdl, msg);
+	});
+var $elm$core$Platform$Sub$batch = _Platform_batch;
+var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
+var $author$project$Main$subscriptions = function (_v0) {
+	return $elm$core$Platform$Sub$none;
+};
 var $elm$html$Html$b = _VirtualDom_node('b');
 var $elm$html$Html$div = _VirtualDom_node('div');
 var $elm$virtual_dom$VirtualDom$map = _VirtualDom_map;

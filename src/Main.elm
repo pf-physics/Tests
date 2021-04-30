@@ -11,8 +11,7 @@ import MainPage
 
 -- MAIN
 
--- .init({flags: window.location.href})
-main : Program String Model Msg
+main : Program () Model Msg
 main =
   Browser.application
     { init = init
@@ -42,12 +41,13 @@ type Page
   | CV
   | APITest
 
-init : String -> Url.Url -> Nav.Key -> ( Model, Cmd Msg )
+init : () -> Url.Url -> Nav.Key -> ( Model, Cmd Msg )
 init flags url key =
   let
-    ( mdl, msg ) = MainPage.init () -- whichever page is init handled by url, here or in update?
+    -- ( mdl, msg ) = MainPage.init ()
+    ( mdl, msg ) = update (UrlChanged url) (Model key url Nothing (Just "soup"))
   in
-  ( Model key url (Just mdl) (Just flags) , Cmd.map IndexPage msg )
+  ( mdl , msg ) -- Cmd.map IndexPage msg
 
 
 
