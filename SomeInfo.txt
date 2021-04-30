@@ -1,0 +1,5 @@
+Can pass in url with flags
+
+npm install -g elm elm-test elm-css elm-live
+Use elm-live (must npm init in the folder first)
+elm-live src/Main.elm --pushstate
