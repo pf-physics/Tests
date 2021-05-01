@@ -39,6 +39,7 @@ type alias Model =
   , mainModel : (Maybe MainPage.Model)
   , apiModel : (Maybe APIPage.Model )
   , message : Maybe String
+  , currentPage : Page
   }
 
 
@@ -46,7 +47,7 @@ init : () -> Url.Url -> Nav.Key -> ( Model, Cmd Msg )
 init flags url key =
   let
     -- ( mdl, msg ) = MainPage.init ()
-    ( mdl, msg ) = update (UrlChanged url) (Model key url Nothing Nothing Nothing)
+    ( mdl, msg ) = update (UrlChanged url) (Model key url Nothing Nothing Nothing Main )
   in
   ( mdl , msg ) -- Cmd.map IndexPage msg
 
@@ -85,18 +86,21 @@ update msg model =
             let
               (m, c) = MainPage.init ()
             in
-              ({ model | url = url, mainModel = Just m }, Cmd.map MainMsg c)
+              ({ model | url = url, mainModel = Just m, currentPage = Main }, Cmd.map MainMsg c)
 
           Just APITest ->
             let
               (m,c) = APIPage.init ()
             in
-              ({ model | url = url, apiModel = Just m }, Cmd.map APIMsg c)
+              ({ model | url = url, apiModel = Just m, currentPage = APITest }, Cmd.map APIMsg c)
 
           _ ->
-            ({ model | url = url }, Cmd.none)
+            let
+              (m, c) = MainPage.init ()
+            in
+              ({ model | url = url, mainModel = Just m, currentPage = Main }, Cmd.map MainMsg c) -- Default is main
 
-    MainMsg b -> case model.mainModel of -- sooo redundant.... I should be able to assume it exists because of url change, if no exist, do nothing
+    MainMsg b -> case model.mainModel of
                     Just a ->
                       let
                         (m, c) = MainPage.update b a
@@ -104,10 +108,7 @@ update msg model =
                       ({ model | mainModel = Just m }, Cmd.map MainMsg c)
 
                     Nothing ->
-                      let
-                        (m, c) = MainPage.init ()
-                      in
-                      ({ model | mainModel = Just m }, Cmd.map MainMsg c)
+                      ( model, Cmd.none )
 
     APIMsg b -> case model.apiModel of
                     Just a ->
@@ -117,10 +118,7 @@ update msg model =
                       ({ model | apiModel = Just m }, Cmd.map APIMsg c)
 
                     Nothing ->
-                      let
-                        (m, c) = APIPage.init ()
-                      in
-                      ({ model | apiModel = Just m }, Cmd.map APIMsg c)
+                      ( model, Cmd.none )
 
 
 -- SUBSCRIPTIONS
@@ -139,7 +137,6 @@ view : Model -> Browser.Document Msg
 view model =
   let
     title = Url.toString model.url
-    route = Url.Parser.parse routeParser model.url
 
   in
     { title = title
@@ -154,28 +151,21 @@ view model =
                 [ Css.backgroundColor (rgb 0 0 0)
                 ]
             ]
-        , viewTabs (Maybe.withDefault Main route)
+        , viewTabs model.currentPage
         , fromUnstyled (text (Maybe.withDefault "" model.message))
-        , fromUnstyled (case route of
-            Just p ->
-              case p of
-                Redshift -> text "This will be the redshift page... later"
-                CV -> text "CV page... so much experience wow"
+        , fromUnstyled (case model.currentPage of
+              Redshift -> text "This will be the redshift page... later"
+              CV -> text "CV page... so much experience wow"
 
-                APITest ->
-                  case model.apiModel of
-                    Just mmd -> toUnstyled (APIPage.view mmd) |> Html.map (APIMsg)
-                    Nothing -> text "Page load fail"
+              APITest ->
+                case model.apiModel of
+                  Just mmd -> toUnstyled (APIPage.view mmd) |> Html.map (APIMsg)
+                  Nothing -> text "Page load fail"
 
-                Main ->
-                  case model.mainModel of
-                    Just mmd -> toUnstyled (MainPage.view mmd) |> Html.map (MainMsg)
-                    Nothing -> text "Page load fail"
-
-            Nothing ->
-              case model.mainModel of -- THIS IS DEFAULT NOW
-                Just mmd -> toUnstyled (MainPage.view mmd) |> Html.map (MainMsg)
-                Nothing -> text "Page load fail"
+              Main ->
+                case model.mainModel of
+                  Just mmd -> toUnstyled (MainPage.view mmd) |> Html.map (MainMsg)
+                  Nothing -> text "Page load fail"
             )
         ] |> List.map toUnstyled
     }
