@@ -45,4 +45,5 @@ view model =
     [ img [ src "Files/placeHolder.gif"] []
     ]
   , p [] [ text "I am currently searching for a PhD in physics"]
+  , p [] [ text "please send soup" ]
   ]
