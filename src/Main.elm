@@ -14,6 +14,7 @@ import Url.Parser exposing (Parser, (</>), int, map, oneOf, s, string)
 import MainPage
 import Navigation exposing (..)
 import APIPage
+import CVPage
 
 -- MAIN
 
@@ -61,6 +62,7 @@ type Msg
   | UrlChanged Url.Url
   | MainMsg MainPage.Msg
   | APIMsg APIPage.Msg
+  | CVMsg CVPage.Msg
 
 
 -- VIEW
@@ -97,6 +99,13 @@ update msg model =
             in
               ({ model | url = url, apiModel = Just m, currentPage = APITest }, Cmd.map APIMsg c)
 
+
+          Just Redshift ->
+            ({ model | url = url, currentPage = Redshift }, Cmd.none )
+
+          Just CV ->
+            ({ model | url = url, currentPage = CV }, Cmd.none )
+
           _ ->
             let
               (m, c) = MainPage.init ()
@@ -122,6 +131,8 @@ update msg model =
 
                     Nothing ->
                       ( model, Cmd.none )
+
+    CVMsg _ -> ( model, Cmd.none )
 
 
 -- SUBSCRIPTIONS
@@ -158,12 +169,14 @@ view model =
         , fromUnstyled (text (Maybe.withDefault "" model.message))
         , fromUnstyled (case model.currentPage of
               Redshift -> text "This will be the redshift page... later"
-              CV -> text "CV page... so much experience wow"
 
               APITest ->
                 case model.apiModel of
                   Just mmd -> toUnstyled (APIPage.view mmd) |> Html.map (APIMsg)
                   Nothing -> text "Page load fail"
+
+              CV ->
+                (toUnstyled CVPage.view |> Html.map CVMsg)
 
               Main ->
                 case model.mainModel of

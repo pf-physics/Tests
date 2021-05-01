@@ -1,9 +1,10 @@
-module MainPage exposing (..)
+module CVPage exposing (..)
 
 import Html.Styled exposing (..)
 import Html.Styled.Attributes exposing (..)
 import Html.Styled.Events exposing (..)
 import Css exposing (..)
+import File.Download as Download
 import Css.Global
 
 -- MODEL
@@ -36,13 +37,12 @@ update msg model =
 -- VIEW
 
 
-view : Model -> Html Msg
-view model =
+view : Html Msg
+view =
   div [ css [padding (px 30)] ]
-  [ h1 [css [displayFlex, justifyContent center] ] [ text "Main page" ]
-  , h2 [css [displayFlex, justifyContent center] ] [ text "Welcome" ]
+  [ h1 [css [displayFlex, justifyContent center] ] [ text "CV" ]
+  , h2 [css [displayFlex, justifyContent center] ] [ text "I do things sometimes" ]
   , div [ css [ displayFlex, justifyContent center ] ]
-    [ img [ src "Files/placeHolder.gif"] []
+    [ a [ href "https://www.wired.com/images_blogs/wiredscience/files/chicken.pdf", Html.Styled.Attributes.target "_blank"] [ text "Download CV "]
     ]
-  , p [ css [ fontSize (px 20)] ] [ text "I am currently searching for a PhD in physics"]
   ]
