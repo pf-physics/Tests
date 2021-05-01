@@ -4,10 +4,16 @@ import Browser
 import Browser.Navigation as Nav
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import Html.Styled exposing (toUnstyled, fromUnstyled)
+import Html.Styled.Events exposing (..)
+import Css exposing (..)
+import Css.Global
 import Url
 import Dict exposing (Dict)
 import Url.Parser exposing (Parser, (</>), int, map, oneOf, s, string)
 import MainPage
+import Navigation exposing (..)
+import APIPage
 
 -- MAIN
 
@@ -31,21 +37,16 @@ type alias Model =
   { key : Nav.Key
   , url : Url.Url
   , mainModel : (Maybe MainPage.Model)
+  , apiModel : (Maybe APIPage.Model )
   , message : Maybe String
   }
 
-
-type Page
-  = Main
-  | Redshift
-  | CV
-  | APITest
 
 init : () -> Url.Url -> Nav.Key -> ( Model, Cmd Msg )
 init flags url key =
   let
     -- ( mdl, msg ) = MainPage.init ()
-    ( mdl, msg ) = update (UrlChanged url) (Model key url Nothing (Just "soup"))
+    ( mdl, msg ) = update (UrlChanged url) (Model key url Nothing Nothing Nothing)
   in
   ( mdl , msg ) -- Cmd.map IndexPage msg
 
@@ -57,11 +58,12 @@ init flags url key =
 type Msg
   = LinkClicked Browser.UrlRequest
   | UrlChanged Url.Url
-  | IndexPage MainPage.Msg
+  | MainMsg MainPage.Msg
+  | APIMsg APIPage.Msg
 
 
-type PageMsg
-  = Froot
+-- VIEW
+
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
@@ -75,23 +77,50 @@ update msg model =
           ( model, Nav.load href )
 
     UrlChanged url -> -- PATTERN MATCH on the page YAH TODO, also only if doesn't already exist, do init
-      let
-         (m, c) = MainPage.init ()
+      let             -- Save current page so only parse route once!
+         route = Url.Parser.parse routeParser url
       in
-         ({ model | url = url, mainModel = Just m }, Cmd.map IndexPage c)
+        case route of
+          Just Main ->
+            let
+              (m, c) = MainPage.init ()
+            in
+              ({ model | url = url, mainModel = Just m }, Cmd.map MainMsg c)
 
-    IndexPage b -> case model.mainModel of -- pattern match here!
+          Just APITest ->
+            let
+              (m,c) = APIPage.init ()
+            in
+              ({ model | url = url, apiModel = Just m }, Cmd.map APIMsg c)
+
+          _ ->
+            ({ model | url = url }, Cmd.none)
+
+    MainMsg b -> case model.mainModel of -- sooo redundant.... I should be able to assume it exists because of url change, if no exist, do nothing
                     Just a ->
                       let
                         (m, c) = MainPage.update b a
                       in
-                      ({ model | mainModel = Just m }, Cmd.map IndexPage c)
+                      ({ model | mainModel = Just m }, Cmd.map MainMsg c)
 
                     Nothing ->
                       let
                         (m, c) = MainPage.init ()
                       in
-                      ({ model | mainModel = Just m }, Cmd.map IndexPage c)
+                      ({ model | mainModel = Just m }, Cmd.map MainMsg c)
+
+    APIMsg b -> case model.apiModel of
+                    Just a ->
+                      let
+                        (m, c) = APIPage.update b a
+                      in
+                      ({ model | apiModel = Just m }, Cmd.map APIMsg c)
+
+                    Nothing ->
+                      let
+                        (m, c) = APIPage.init ()
+                      in
+                      ({ model | apiModel = Just m }, Cmd.map APIMsg c)
 
 
 -- SUBSCRIPTIONS
@@ -105,59 +134,50 @@ subscriptions _ =
 
 -- VIEW
 
-pageMap: Dict String Page
-pageMap =
-  Dict.fromList
-  [("", Main), ("main", Main), ("redshift", Redshift)]
-
-routeParser : Parser (Page -> a) a
-routeParser =
-  oneOf
-    [ Url.Parser.map Main (Url.Parser.s ("main"))
-    , Url.Parser.map CV (Url.Parser.s ("CV"))
-    , Url.Parser.map Main (Url.Parser.s ("index.html"))
-    , Url.Parser.map Redshift (Url.Parser.s ("redshift"))
-    , Url.Parser.map APITest (Url.Parser.s ("apitest"))
-    ]
 
 view : Model -> Browser.Document Msg
 view model =
   let
     title = Url.toString model.url
-
     route = Url.Parser.parse routeParser model.url
-    test = model.url.host
-
-    page = Dict.get title pageMap
 
   in
     { title = title
     , body =
-        [
-        div [ style "background" "black", style "color" "#90e"] [
-        text (Maybe.withDefault "Why not?" model.message)
-        , b [] [ text title ]
-        , p [] [ text model.url.path ]
-        , b [] [ text test ]
-        , ul []
-            [ viewLink "main"
-            , viewLink "redshift"
-            , viewLink "CV"
-            , viewLink "apitest"
+        [ Css.Global.global
+            [ Css.Global.body
+              [ Css.backgroundColor (rgb 0 0 0)
+              , Css.color (hex "#a400ff")
+              ]
+            , Css.Global.typeSelector
+                "::selection" -- delete this I guess
+                [ Css.backgroundColor (rgb 0 0 0)
+                ]
             ]
-        , case route of
+        , viewTabs (Maybe.withDefault Main route)
+        , fromUnstyled (text (Maybe.withDefault "" model.message))
+        , fromUnstyled (case route of
             Just p ->
               case p of
                 Redshift -> text "This will be the redshift page... later"
                 CV -> text "CV page... so much experience wow"
-                APITest -> text "Api ? I guess"
-                Main -> case model.mainModel of
-                                            Just mmd -> MainPage.view mmd |> Html.map (IndexPage)
-                                            Nothing -> text "Page load fail"
 
-            Nothing -> text "This isn't a real page so I'll just remind you that snails are not slugs and cannot be removed from their shells!"
-        ]
-        ]
+                APITest ->
+                  case model.apiModel of
+                    Just mmd -> toUnstyled (APIPage.view mmd) |> Html.map (APIMsg)
+                    Nothing -> text "Page load fail"
+
+                Main ->
+                  case model.mainModel of
+                    Just mmd -> toUnstyled (MainPage.view mmd) |> Html.map (MainMsg)
+                    Nothing -> text "Page load fail"
+
+            Nothing ->
+              case model.mainModel of -- THIS IS DEFAULT NOW
+                Just mmd -> toUnstyled (MainPage.view mmd) |> Html.map (MainMsg)
+                Nothing -> text "Page load fail"
+            )
+        ] |> List.map toUnstyled
     }
 
 -- The Repo name, will change eventually
