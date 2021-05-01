@@ -29,11 +29,14 @@ viewTabs page =
     div []
         [ Tab.tabsWrapper
             ( List.map (\p ->
+                let
+                    name = (String.replace "#" "" (Tuple.first p))
+                in
                 a
                 [ if Tuple.second p == page then Tab.activeCss else Tab.inactiveCss
                 , href (Tuple.first p)
                 ]
-                [h3 [] [ text (String.toUpper (Tuple.first p)) ]]
+                [h3 [] [ text (String.toUpper name) ] ]
                 )
                 pageList
             )
@@ -41,7 +44,7 @@ viewTabs page =
 
 
 pageList: List (String, Page)
-pageList = [("main", Main), ("redshift", Redshift), ("CV", CV ), ("apis", APITest)]
+pageList = [("#main", Main), ("#redshift", Redshift), ("#CV", CV ), ("#apis", APITest)]
 
 pageMap: Dict String Page
 pageMap =

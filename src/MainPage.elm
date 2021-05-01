@@ -44,4 +44,5 @@ view model =
   , div [ css [ displayFlex, justifyContent center ] ]
     [ img [ src "Files/placeHolder.gif"] []
     ]
+  , p [] [ text "I am currently searching for a PhD in physics"]
   ]

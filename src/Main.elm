@@ -78,8 +78,11 @@ update msg model =
           ( model, Nav.load href )
 
     UrlChanged url -> -- PATTERN MATCH on the page YAH TODO, also only if doesn't already exist, do init
-      let             -- Save current page so only parse route once!
-         route = Url.Parser.parse routeParser url
+      let
+        -- This is only being done to allow # routing, normally would use parser
+        urlString = Maybe.map (\v -> "#" ++ v) (List.head (List.reverse (String.split "#" (Url.toString url))))
+        route = Dict.get (Maybe.withDefault "" urlString) pageMap
+        -- route = Url.Parser.parse routeParser url
       in
         case route of
           Just Main ->
@@ -139,7 +142,7 @@ view model =
     title = Url.toString model.url
 
   in
-    { title = title
+    { title = "Soup time"
     , body =
         [ Css.Global.global
             [ Css.Global.body
