@@ -132,7 +132,8 @@ update msg model =
                     Nothing ->
                       ( model, Cmd.none )
 
-    CVMsg _ -> ( model, Cmd.none )
+    CVMsg c ->
+          ( model, Cmd.map CVMsg (CVPage.update c) )
 
 
 -- SUBSCRIPTIONS
