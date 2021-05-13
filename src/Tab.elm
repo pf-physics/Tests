@@ -20,7 +20,7 @@ activeCss =
         , justifyContent center
         , Css.property "color" "white"
         , textDecoration none
-        , backgroundColor (hex "#6b00a6")
+        , backgroundColor (hex "#616161")
         ]
 
 inactiveCss : Attribute msg
@@ -49,7 +49,7 @@ tabsWrapper tabs =
             , alignItems center
             , justifyContent left
             --, border3 (px 3) solid (hex "efefef")
-            , backgroundColor (hex "#530082")
+            , backgroundColor (hex "#424242")
             ]
         ]
         tabs

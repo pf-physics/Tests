@@ -5615,7 +5615,15 @@ var $elm$core$List$head = function (list) {
 var $author$project$APIPage$GotImage = function (a) {
 	return {$: 'GotImage', a: a};
 };
+var $author$project$APIPage$GotJoke = function (a) {
+	return {$: 'GotJoke', a: a};
+};
 var $author$project$APIPage$Loading = {$: 'Loading'};
+var $author$project$APIPage$Model = F2(
+	function (nasaImage, randomJoke) {
+		return {nasaImage: nasaImage, randomJoke: randomJoke};
+	});
+var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$json$Json$Decode$decodeString = _Json_runOnString;
 var $elm$http$Http$BadStatus_ = F2(
 	function (a, b) {
@@ -6374,20 +6382,37 @@ var $elm$http$Http$get = function (r) {
 var $elm$json$Json$Decode$field = _Json_decodeField;
 var $elm$json$Json$Decode$string = _Json_decodeString;
 var $author$project$APIPage$imageDecoder = A2($elm$json$Json$Decode$field, 'url', $elm$json$Json$Decode$string);
+var $author$project$APIPage$Joke = F2(
+	function (setup, delivery) {
+		return {delivery: delivery, setup: setup};
+	});
+var $author$project$APIPage$randomJokeDecoder = A3(
+	$elm$json$Json$Decode$map2,
+	$author$project$APIPage$Joke,
+	A2($elm$json$Json$Decode$field, 'setup', $elm$json$Json$Decode$string),
+	A2($elm$json$Json$Decode$field, 'delivery', $elm$json$Json$Decode$string));
 var $author$project$APIPage$init = function (_v0) {
 	return _Utils_Tuple2(
-		$author$project$APIPage$Loading,
-		$elm$http$Http$get(
-			{
-				expect: A2($elm$http$Http$expectJson, $author$project$APIPage$GotImage, $author$project$APIPage$imageDecoder),
-				url: 'https://api.nasa.gov/planetary/apod?api_key=E5I1roOsvZvSKbJFALNAnoHqD12FNcmL8uoARAd3'
-			}));
+		A2($author$project$APIPage$Model, $author$project$APIPage$Loading, $author$project$APIPage$Loading),
+		$elm$core$Platform$Cmd$batch(
+			_List_fromArray(
+				[
+					$elm$http$Http$get(
+					{
+						expect: A2($elm$http$Http$expectJson, $author$project$APIPage$GotImage, $author$project$APIPage$imageDecoder),
+						url: 'https://api.nasa.gov/planetary/apod?api_key=E5I1roOsvZvSKbJFALNAnoHqD12FNcmL8uoARAd3'
+					}),
+					$elm$http$Http$get(
+					{
+						expect: A2($elm$http$Http$expectJson, $author$project$APIPage$GotJoke, $author$project$APIPage$randomJokeDecoder),
+						url: 'https://v2.jokeapi.dev/joke/Spooky?type=twopart?blacklistFlags=nsfw,racist,sexist,explicit'
+					})
+				])));
 };
 var $author$project$MainPage$Model = F2(
 	function (test, message) {
 		return {message: message, test: test};
 	});
-var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $author$project$MainPage$init = function (_v0) {
 	return _Utils_Tuple2(
@@ -6471,20 +6496,56 @@ var $elm$url$Url$toString = function (url) {
 					_Utils_ap(http, url.host)),
 				url.path)));
 };
-var $author$project$APIPage$Failure = {$: 'Failure'};
+var $author$project$APIPage$Failure = function (a) {
+	return {$: 'Failure', a: a};
+};
 var $author$project$APIPage$Success = function (a) {
 	return {$: 'Success', a: a};
 };
 var $author$project$APIPage$update = F2(
 	function (msg, model) {
-		var result = msg.a;
-		if (result.$ === 'Ok') {
-			var image = result.a;
-			return _Utils_Tuple2(
-				$author$project$APIPage$Success(image),
-				$elm$core$Platform$Cmd$none);
+		if (msg.$ === 'GotImage') {
+			var result = msg.a;
+			if (result.$ === 'Ok') {
+				var image = result.a;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+							nasaImage: $author$project$APIPage$Success(image)
+						}),
+					$elm$core$Platform$Cmd$none);
+			} else {
+				var e = result.a;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+							nasaImage: $author$project$APIPage$Failure(e)
+						}),
+					$elm$core$Platform$Cmd$none);
+			}
 		} else {
-			return _Utils_Tuple2($author$project$APIPage$Failure, $elm$core$Platform$Cmd$none);
+			var result = msg.a;
+			if (result.$ === 'Ok') {
+				var res = result.a;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+							randomJoke: $author$project$APIPage$Success(res)
+						}),
+					$elm$core$Platform$Cmd$none);
+			} else {
+				var e = result.a;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+							randomJoke: $author$project$APIPage$Failure(e)
+						}),
+					$elm$core$Platform$Cmd$none);
+			}
 		}
 	});
 var $elm$time$Time$Posix = function (a) {
@@ -8794,28 +8855,6 @@ var $rtfeldman$elm_css$Css$hex = function (str) {
 };
 var $elm$virtual_dom$VirtualDom$map = _VirtualDom_map;
 var $elm$html$Html$map = $elm$virtual_dom$VirtualDom$map;
-var $rtfeldman$elm_css$Css$cssFunction = F2(
-	function (funcName, args) {
-		return funcName + ('(' + (A2($elm$core$String$join, ', ', args) + ')'));
-	});
-var $rtfeldman$elm_css$Css$rgb = F3(
-	function (r, g, b) {
-		return {
-			alpha: 1,
-			blue: b,
-			color: $rtfeldman$elm_css$Css$Structure$Compatible,
-			green: g,
-			red: r,
-			value: A2(
-				$rtfeldman$elm_css$Css$cssFunction,
-				'rgb',
-				A2(
-					$elm$core$List$map,
-					$elm$core$String$fromInt,
-					_List_fromArray(
-						[r, g, b])))
-		};
-	});
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
 var $rtfeldman$elm_css$VirtualDom$Styled$accumulateStyles = F2(
 	function (_v0, styles) {
@@ -9312,7 +9351,9 @@ var $rtfeldman$elm_css$VirtualDom$Styled$node = $rtfeldman$elm_css$VirtualDom$St
 var $rtfeldman$elm_css$Html$Styled$node = $rtfeldman$elm_css$VirtualDom$Styled$node;
 var $rtfeldman$elm_css$Html$Styled$div = $rtfeldman$elm_css$Html$Styled$node('div');
 var $rtfeldman$elm_css$Html$Styled$h1 = $rtfeldman$elm_css$Html$Styled$node('h1');
+var $rtfeldman$elm_css$Html$Styled$h2 = $rtfeldman$elm_css$Html$Styled$node('h2');
 var $rtfeldman$elm_css$Html$Styled$h3 = $rtfeldman$elm_css$Html$Styled$node('h3');
+var $rtfeldman$elm_css$Html$Styled$h4 = $rtfeldman$elm_css$Html$Styled$node('h4');
 var $rtfeldman$elm_css$Html$Styled$img = $rtfeldman$elm_css$Html$Styled$node('img');
 var $rtfeldman$elm_css$Html$Styled$p = $rtfeldman$elm_css$Html$Styled$node('p');
 var $rtfeldman$elm_css$VirtualDom$Styled$Attribute = F3(
@@ -9363,19 +9404,14 @@ var $rtfeldman$elm_css$Html$Styled$text = $rtfeldman$elm_css$VirtualDom$Styled$t
 var $author$project$APIPage$view = function (model) {
 	return A2(
 		$rtfeldman$elm_css$Html$Styled$div,
-		_List_fromArray(
-			[
-				A2($rtfeldman$elm_css$Html$Styled$Attributes$style, 'background', 'black'),
-				A2($rtfeldman$elm_css$Html$Styled$Attributes$style, 'height', '2000px')
-			]),
+		_List_Nil,
 		_List_fromArray(
 			[
 				A2(
 				$rtfeldman$elm_css$Html$Styled$div,
 				_List_fromArray(
 					[
-						A2($rtfeldman$elm_css$Html$Styled$Attributes$style, 'text-align', 'center'),
-						A2($rtfeldman$elm_css$Html$Styled$Attributes$style, 'color', '#90e')
+						A2($rtfeldman$elm_css$Html$Styled$Attributes$style, 'text-align', 'center')
 					]),
 				_List_fromArray(
 					[
@@ -9391,7 +9427,83 @@ var $author$project$APIPage$view = function (model) {
 						_List_Nil,
 						_List_fromArray(
 							[
-								$rtfeldman$elm_css$Html$Styled$text('Here are some fun apis I like:')
+								$rtfeldman$elm_css$Html$Styled$text('On this page I put some fun apis I like.')
+							])),
+						A2(
+						$rtfeldman$elm_css$Html$Styled$div,
+						_List_fromArray(
+							[
+								A2($rtfeldman$elm_css$Html$Styled$Attributes$style, 'border', '3px solid white'),
+								A2($rtfeldman$elm_css$Html$Styled$Attributes$style, 'border-radius', '10px'),
+								A2($rtfeldman$elm_css$Html$Styled$Attributes$style, 'width', '500px'),
+								A2($rtfeldman$elm_css$Html$Styled$Attributes$style, 'margin', 'auto')
+							]),
+						_List_fromArray(
+							[
+								A2(
+								$rtfeldman$elm_css$Html$Styled$h2,
+								_List_Nil,
+								_List_fromArray(
+									[
+										$rtfeldman$elm_css$Html$Styled$text('Random (spooky) joke')
+									])),
+								function () {
+								var _v0 = model.randomJoke;
+								switch (_v0.$) {
+									case 'Failure':
+										var e = _v0.a;
+										if (e.$ === 'BadStatus') {
+											var status = e.a;
+											return A2(
+												$rtfeldman$elm_css$Html$Styled$p,
+												_List_Nil,
+												_List_fromArray(
+													[
+														A2(
+														$rtfeldman$elm_css$Html$Styled$h3,
+														_List_Nil,
+														_List_fromArray(
+															[
+																$rtfeldman$elm_css$Html$Styled$text('There was an error getting the joke with status:')
+															])),
+														A2(
+														$rtfeldman$elm_css$Html$Styled$img,
+														_List_fromArray(
+															[
+																$rtfeldman$elm_css$Html$Styled$Attributes$src(
+																'https://http.cat/' + $elm$core$String$fromInt(status))
+															]),
+														_List_Nil)
+													]));
+										} else {
+											return $rtfeldman$elm_css$Html$Styled$text('Error loading joke');
+										}
+									case 'Loading':
+										return $rtfeldman$elm_css$Html$Styled$text('Loading...');
+									default:
+										var joke = _v0.a;
+										return A2(
+											$rtfeldman$elm_css$Html$Styled$div,
+											_List_Nil,
+											_List_fromArray(
+												[
+													A2(
+													$rtfeldman$elm_css$Html$Styled$h4,
+													_List_Nil,
+													_List_fromArray(
+														[
+															$rtfeldman$elm_css$Html$Styled$text(joke.setup)
+														])),
+													A2(
+													$rtfeldman$elm_css$Html$Styled$h4,
+													_List_Nil,
+													_List_fromArray(
+														[
+															$rtfeldman$elm_css$Html$Styled$text(joke.delivery)
+														]))
+												]));
+								}
+							}()
 							])),
 						A2(
 						$rtfeldman$elm_css$Html$Styled$h3,
@@ -9401,13 +9513,40 @@ var $author$project$APIPage$view = function (model) {
 								$rtfeldman$elm_css$Html$Styled$text('Nasa Daily Image')
 							])),
 						function () {
-						switch (model.$) {
+						var _v2 = model.nasaImage;
+						switch (_v2.$) {
 							case 'Failure':
-								return $rtfeldman$elm_css$Html$Styled$text('Error loading image');
+								var e = _v2.a;
+								if (e.$ === 'BadStatus') {
+									var status = e.a;
+									return A2(
+										$rtfeldman$elm_css$Html$Styled$p,
+										_List_Nil,
+										_List_fromArray(
+											[
+												A2(
+												$rtfeldman$elm_css$Html$Styled$h2,
+												_List_Nil,
+												_List_fromArray(
+													[
+														$rtfeldman$elm_css$Html$Styled$text('There was an error getting the image with status:')
+													])),
+												A2(
+												$rtfeldman$elm_css$Html$Styled$img,
+												_List_fromArray(
+													[
+														$rtfeldman$elm_css$Html$Styled$Attributes$src(
+														'https://http.cat/' + $elm$core$String$fromInt(status))
+													]),
+												_List_Nil)
+											]));
+								} else {
+									return $rtfeldman$elm_css$Html$Styled$text('Error loading image');
+								}
 							case 'Loading':
 								return $rtfeldman$elm_css$Html$Styled$text('Loading...');
 							default:
-								var image = model.a;
+								var image = _v2.a;
 								return A2(
 									$rtfeldman$elm_css$Html$Styled$img,
 									_List_fromArray(
@@ -9560,7 +9699,6 @@ var $rtfeldman$elm_css$Html$Styled$Internal$css = function (styles) {
 };
 var $rtfeldman$elm_css$Html$Styled$Attributes$css = $rtfeldman$elm_css$Html$Styled$Internal$css;
 var $rtfeldman$elm_css$Css$displayFlex = A2($rtfeldman$elm_css$Css$property, 'display', 'flex');
-var $rtfeldman$elm_css$Html$Styled$h2 = $rtfeldman$elm_css$Html$Styled$node('h2');
 var $rtfeldman$elm_css$Css$Preprocess$ApplyStyles = function (a) {
 	return {$: 'ApplyStyles', a: a};
 };
@@ -9835,7 +9973,7 @@ var $author$project$Tab$activeCss = $rtfeldman$elm_css$Html$Styled$Attributes$cs
 			A2($rtfeldman$elm_css$Css$property, 'color', 'white'),
 			$rtfeldman$elm_css$Css$textDecoration($rtfeldman$elm_css$Css$none),
 			$rtfeldman$elm_css$Css$backgroundColor(
-			$rtfeldman$elm_css$Css$hex('#6b00a6'))
+			$rtfeldman$elm_css$Css$hex('#616161'))
 		]));
 var $rtfeldman$elm_css$Html$Styled$Attributes$href = function (url) {
 	return A2($rtfeldman$elm_css$Html$Styled$Attributes$stringProperty, 'href', url);
@@ -9881,7 +10019,7 @@ var $author$project$Tab$tabsWrapper = function (tabs) {
 						$rtfeldman$elm_css$Css$alignItems($rtfeldman$elm_css$Css$center),
 						$rtfeldman$elm_css$Css$justifyContent($rtfeldman$elm_css$Css$left),
 						$rtfeldman$elm_css$Css$backgroundColor(
-						$rtfeldman$elm_css$Css$hex('#530082'))
+						$rtfeldman$elm_css$Css$hex('#424242'))
 					]))
 			]),
 		tabs);
@@ -9935,18 +10073,10 @@ var $author$project$Main$view = function (model) {
 							_List_fromArray(
 								[
 									$rtfeldman$elm_css$Css$backgroundColor(
-									A3($rtfeldman$elm_css$Css$rgb, 0, 0, 0)),
+									$rtfeldman$elm_css$Css$hex('#121212')),
 									$rtfeldman$elm_css$Css$color(
-									$rtfeldman$elm_css$Css$hex('#a400ff')),
+									$rtfeldman$elm_css$Css$hex('#c967ff')),
 									A2($rtfeldman$elm_css$Css$property, 'font-family', 'arial')
-								])),
-							A2(
-							$rtfeldman$elm_css$Css$Global$typeSelector,
-							'::selection',
-							_List_fromArray(
-								[
-									$rtfeldman$elm_css$Css$backgroundColor(
-									A3($rtfeldman$elm_css$Css$rgb, 0, 0, 0))
 								]))
 						])),
 					$author$project$Navigation$viewTabs(model.currentPage),

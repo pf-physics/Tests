@@ -158,14 +158,10 @@ view model =
     , body =
         [ Css.Global.global
             [ Css.Global.body
-              [ Css.backgroundColor (rgb 0 0 0)
-              , Css.color (hex "#a400ff")
+              [ Css.backgroundColor (hex "#121212")
+              , Css.color (hex "#c967ff")
               , Css.property "font-family" "arial"
               ]
-            , Css.Global.typeSelector
-                "::selection" -- delete this I guess
-                [ Css.backgroundColor (rgb 0 0 0)
-                ]
             ]
         , viewTabs model.currentPage
         , fromUnstyled (text (Maybe.withDefault "" model.message))
