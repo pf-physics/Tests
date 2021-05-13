@@ -9,24 +9,31 @@ import Html.Styled.Events exposing (..)
 activeCss: Attribute msg
 activeCss =
     css
-        [ border3 (px 3) solid (hex "efefef")
-        , borderBottomColor transparent
-        , borderTopLeftRadius <| px 2
-        , borderTopRightRadius <| px 2
-        , padding (px 10)
-        , Css.width (pct 100)
+        [ Css.width (px 120)
+        -- , borderLeft3 (px 3) solid (hex "efefef")
+        -- , borderRight3 (px 3) solid (hex "efefef")
+        --, borderTopLeftRadius <| px 2
+        --, borderTopRightRadius <| px 2
+        --, borderRadius <| px 2
+        --, padding (px 10)
         , displayFlex
         , justifyContent center
+        , Css.property "color" "white"
+        , textDecoration none
+        , backgroundColor (hex "#6b00a6")
         ]
 
 inactiveCss : Attribute msg
 inactiveCss =
     css
-        [ borderBottom3 (px 3) solid (hex "efefef")
-        , padding (px 10)
-        , Css.width (pct 100)
+        [ Css.width (px 120)
+        -- borderBottom3 (px 3) solid (hex "efefef")
+        --, borderTop3 (px 3) solid (hex "efefef")
+        --, padding (px 10)
         , displayFlex
         , justifyContent center
+        , Css.property "color" "white"
+        , textDecoration none
         ]
 
 
@@ -40,7 +47,9 @@ tabsWrapper tabs =
         [ css
             [ displayFlex
             , alignItems center
-            , justifyContent spaceBetween
+            , justifyContent left
+            --, border3 (px 3) solid (hex "efefef")
+            , backgroundColor (hex "#530082")
             ]
         ]
         tabs

@@ -12,3 +12,4 @@ On github will have to parse urls using #
 Oh well
 
 Now file upload
+Make it look nicer... I gues... hmmm

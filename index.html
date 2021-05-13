@@ -9314,6 +9314,7 @@ var $rtfeldman$elm_css$Html$Styled$div = $rtfeldman$elm_css$Html$Styled$node('di
 var $rtfeldman$elm_css$Html$Styled$h1 = $rtfeldman$elm_css$Html$Styled$node('h1');
 var $rtfeldman$elm_css$Html$Styled$h3 = $rtfeldman$elm_css$Html$Styled$node('h3');
 var $rtfeldman$elm_css$Html$Styled$img = $rtfeldman$elm_css$Html$Styled$node('img');
+var $rtfeldman$elm_css$Html$Styled$p = $rtfeldman$elm_css$Html$Styled$node('p');
 var $rtfeldman$elm_css$VirtualDom$Styled$Attribute = F3(
 	function (a, b, c) {
 		return {$: 'Attribute', a: a, b: b, c: c};
@@ -9384,6 +9385,13 @@ var $author$project$APIPage$view = function (model) {
 						_List_fromArray(
 							[
 								$rtfeldman$elm_css$Html$Styled$text('API page')
+							])),
+						A2(
+						$rtfeldman$elm_css$Html$Styled$p,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$rtfeldman$elm_css$Html$Styled$text('Here are some fun apis I like:')
 							])),
 						A2(
 						$rtfeldman$elm_css$Html$Styled$h3,
@@ -9731,7 +9739,6 @@ var $author$project$CVPage$view = A2(
 					$rtfeldman$elm_css$Html$Styled$text('Download frog')
 				]))
 		]));
-var $rtfeldman$elm_css$Html$Styled$p = $rtfeldman$elm_css$Html$Styled$node('p');
 var $author$project$MainPage$view = function (model) {
 	return A2(
 		$rtfeldman$elm_css$Html$Styled$div,
@@ -9815,53 +9822,33 @@ var $author$project$MainPage$view = function (model) {
 			]));
 };
 var $rtfeldman$elm_css$Html$Styled$a = $rtfeldman$elm_css$Html$Styled$node('a');
-var $rtfeldman$elm_css$Css$borderBottomColor = function (c) {
-	return A2($rtfeldman$elm_css$Css$property, 'border-bottom-color', c.value);
-};
-var $rtfeldman$elm_css$Css$borderTopLeftRadius = $rtfeldman$elm_css$Css$prop1('border-top-left-radius');
-var $rtfeldman$elm_css$Css$borderTopRightRadius = $rtfeldman$elm_css$Css$prop1('border-top-right-radius');
-var $rtfeldman$elm_css$Css$PercentageUnits = {$: 'PercentageUnits'};
-var $rtfeldman$elm_css$Css$pct = A2($rtfeldman$elm_css$Css$Internal$lengthConverter, $rtfeldman$elm_css$Css$PercentageUnits, '%');
-var $rtfeldman$elm_css$Css$transparent = {color: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'transparent'};
+var $rtfeldman$elm_css$Css$none = {backgroundImage: $rtfeldman$elm_css$Css$Structure$Compatible, blockAxisOverflow: $rtfeldman$elm_css$Css$Structure$Compatible, borderStyle: $rtfeldman$elm_css$Css$Structure$Compatible, cursor: $rtfeldman$elm_css$Css$Structure$Compatible, display: $rtfeldman$elm_css$Css$Structure$Compatible, hoverCapability: $rtfeldman$elm_css$Css$Structure$Compatible, inlineAxisOverflow: $rtfeldman$elm_css$Css$Structure$Compatible, keyframes: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrNone: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrNoneOrMinMaxDimension: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrNumberOrAutoOrNoneOrContent: $rtfeldman$elm_css$Css$Structure$Compatible, listStyleType: $rtfeldman$elm_css$Css$Structure$Compatible, listStyleTypeOrPositionOrImage: $rtfeldman$elm_css$Css$Structure$Compatible, none: $rtfeldman$elm_css$Css$Structure$Compatible, outline: $rtfeldman$elm_css$Css$Structure$Compatible, pointerDevice: $rtfeldman$elm_css$Css$Structure$Compatible, pointerEvents: $rtfeldman$elm_css$Css$Structure$Compatible, resize: $rtfeldman$elm_css$Css$Structure$Compatible, scriptingSupport: $rtfeldman$elm_css$Css$Structure$Compatible, textDecorationLine: $rtfeldman$elm_css$Css$Structure$Compatible, textTransform: $rtfeldman$elm_css$Css$Structure$Compatible, touchAction: $rtfeldman$elm_css$Css$Structure$Compatible, transform: $rtfeldman$elm_css$Css$Structure$Compatible, updateFrequency: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'none'};
+var $rtfeldman$elm_css$Css$textDecoration = $rtfeldman$elm_css$Css$prop1('text-decoration');
 var $rtfeldman$elm_css$Css$width = $rtfeldman$elm_css$Css$prop1('width');
 var $author$project$Tab$activeCss = $rtfeldman$elm_css$Html$Styled$Attributes$css(
 	_List_fromArray(
 		[
-			A3(
-			$rtfeldman$elm_css$Css$border3,
-			$rtfeldman$elm_css$Css$px(3),
-			$rtfeldman$elm_css$Css$solid,
-			$rtfeldman$elm_css$Css$hex('efefef')),
-			$rtfeldman$elm_css$Css$borderBottomColor($rtfeldman$elm_css$Css$transparent),
-			$rtfeldman$elm_css$Css$borderTopLeftRadius(
-			$rtfeldman$elm_css$Css$px(2)),
-			$rtfeldman$elm_css$Css$borderTopRightRadius(
-			$rtfeldman$elm_css$Css$px(2)),
-			$rtfeldman$elm_css$Css$padding(
-			$rtfeldman$elm_css$Css$px(10)),
 			$rtfeldman$elm_css$Css$width(
-			$rtfeldman$elm_css$Css$pct(100)),
+			$rtfeldman$elm_css$Css$px(120)),
 			$rtfeldman$elm_css$Css$displayFlex,
-			$rtfeldman$elm_css$Css$justifyContent($rtfeldman$elm_css$Css$center)
+			$rtfeldman$elm_css$Css$justifyContent($rtfeldman$elm_css$Css$center),
+			A2($rtfeldman$elm_css$Css$property, 'color', 'white'),
+			$rtfeldman$elm_css$Css$textDecoration($rtfeldman$elm_css$Css$none),
+			$rtfeldman$elm_css$Css$backgroundColor(
+			$rtfeldman$elm_css$Css$hex('#6b00a6'))
 		]));
 var $rtfeldman$elm_css$Html$Styled$Attributes$href = function (url) {
 	return A2($rtfeldman$elm_css$Html$Styled$Attributes$stringProperty, 'href', url);
 };
-var $rtfeldman$elm_css$Css$borderBottom3 = $rtfeldman$elm_css$Css$prop3('border-bottom');
 var $author$project$Tab$inactiveCss = $rtfeldman$elm_css$Html$Styled$Attributes$css(
 	_List_fromArray(
 		[
-			A3(
-			$rtfeldman$elm_css$Css$borderBottom3,
-			$rtfeldman$elm_css$Css$px(3),
-			$rtfeldman$elm_css$Css$solid,
-			$rtfeldman$elm_css$Css$hex('efefef')),
-			$rtfeldman$elm_css$Css$padding(
-			$rtfeldman$elm_css$Css$px(10)),
 			$rtfeldman$elm_css$Css$width(
-			$rtfeldman$elm_css$Css$pct(100)),
+			$rtfeldman$elm_css$Css$px(120)),
 			$rtfeldman$elm_css$Css$displayFlex,
-			$rtfeldman$elm_css$Css$justifyContent($rtfeldman$elm_css$Css$center)
+			$rtfeldman$elm_css$Css$justifyContent($rtfeldman$elm_css$Css$center),
+			A2($rtfeldman$elm_css$Css$property, 'color', 'white'),
+			$rtfeldman$elm_css$Css$textDecoration($rtfeldman$elm_css$Css$none)
 		]));
 var $elm$core$String$replace = F3(
 	function (before, after, string) {
@@ -9881,7 +9868,7 @@ var $rtfeldman$elm_css$Css$alignItems = function (fn) {
 		'align-items',
 		fn($rtfeldman$elm_css$Css$Internal$lengthForOverloadedProperty));
 };
-var $rtfeldman$elm_css$Css$spaceBetween = $rtfeldman$elm_css$Css$prop1('space-between');
+var $rtfeldman$elm_css$Css$left = $rtfeldman$elm_css$Css$prop1('left');
 var $author$project$Tab$tabsWrapper = function (tabs) {
 	return A2(
 		$rtfeldman$elm_css$Html$Styled$div,
@@ -9892,7 +9879,9 @@ var $author$project$Tab$tabsWrapper = function (tabs) {
 					[
 						$rtfeldman$elm_css$Css$displayFlex,
 						$rtfeldman$elm_css$Css$alignItems($rtfeldman$elm_css$Css$center),
-						$rtfeldman$elm_css$Css$justifyContent($rtfeldman$elm_css$Css$spaceBetween)
+						$rtfeldman$elm_css$Css$justifyContent($rtfeldman$elm_css$Css$left),
+						$rtfeldman$elm_css$Css$backgroundColor(
+						$rtfeldman$elm_css$Css$hex('#530082'))
 					]))
 			]),
 		tabs);
@@ -9948,7 +9937,8 @@ var $author$project$Main$view = function (model) {
 									$rtfeldman$elm_css$Css$backgroundColor(
 									A3($rtfeldman$elm_css$Css$rgb, 0, 0, 0)),
 									$rtfeldman$elm_css$Css$color(
-									$rtfeldman$elm_css$Css$hex('#a400ff'))
+									$rtfeldman$elm_css$Css$hex('#a400ff')),
+									A2($rtfeldman$elm_css$Css$property, 'font-family', 'arial')
 								])),
 							A2(
 							$rtfeldman$elm_css$Css$Global$typeSelector,

@@ -160,6 +160,7 @@ view model =
             [ Css.Global.body
               [ Css.backgroundColor (rgb 0 0 0)
               , Css.color (hex "#a400ff")
+              , Css.property "font-family" "arial"
               ]
             , Css.Global.typeSelector
                 "::selection" -- delete this I guess
